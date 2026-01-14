@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
-use Illuminate\Http\Request;
+use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 
 class PostController extends Controller
 {
@@ -18,16 +19,10 @@ class PostController extends Controller
         return view('posts.create');
     }
 
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
-        $request->validate([
-            'title' => 'required',
-            'content' => 'required',
-        ]);
-
-        Post::create($request->only('title', 'content'));
-
-        return redirect('/posts');
+        Post::create($request->validated());
+        return redirect()->route('posts.index');
     }
 
     public function edit(Post $post)
@@ -35,21 +30,15 @@ class PostController extends Controller
         return view('posts.edit', compact('post'));
     }
 
-    public function update(Request $request, Post $post)
+    public function update(UpdatePostRequest $request, Post $post)
     {
-        $request->validate([
-            'title' => 'required',
-            'content' => 'required',
-        ]);
-
-        $post->update($request->only('title', 'content'));
-
-        return redirect('/posts');
+        $post->update($request->validated());
+        return redirect()->route('posts.index');
     }
 
     public function destroy(Post $post)
     {
         $post->delete();
-        return redirect('/posts');
+        return redirect()->route('posts.index');
     }
 }
