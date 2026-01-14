@@ -1,13 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HelloController;
-use App\Http\Controllers\PostController;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/posts', function () {
+    return view('posts.api-index');
 });
-
-Route::get('/hello', [HelloController::class, 'index']);
-
-Route::resource('posts', PostController::class);
